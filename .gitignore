@@ -1,6 +1,7 @@
 *.ipr
 *.iml
 *.iws
+/.vscode
 /.idea
 /build
 /.gradle/
