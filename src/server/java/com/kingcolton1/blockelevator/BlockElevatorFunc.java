@@ -1,4 +1,4 @@
-package com.kingcolton1;
+package com.kingcolton1.blockelevator;
 
 import com.kingcolton1.blockelevator.BlockeElvator;
 import net.minecraft.src.game.block.Block;

@@ -1,7 +1,6 @@
 package com.kingcolton1.blockelevator;
 
 import com.fox2code.foxloader.loader.ServerMod;
-import com.kingcolton1.BlockElevatorFunc;
 
 import net.minecraft.src.game.block.Block;
 import net.minecraft.src.game.block.Material;
