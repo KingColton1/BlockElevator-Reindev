@@ -1,6 +1,6 @@
 package com.kingcolton1.blockelevator;
 
-import com.kingcolton1.blockelevator.BlockeElvator;
+import com.kingcolton1.blockelevator.BlockElevator;
 import net.minecraft.src.game.block.Block;
 import net.minecraft.src.game.block.Material;
 import net.minecraft.src.game.entity.player.EntityPlayerMP;

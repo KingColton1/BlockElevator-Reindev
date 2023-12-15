@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kingcolton1.blockelevator.BlockElevatorFunc;
-import com.kingcolton1.blockelevator.BlockeElvator;
+import com.kingcolton1.blockelevator.BlockElevator;
 
 import java.util.List;
 
