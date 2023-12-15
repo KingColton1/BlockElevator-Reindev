@@ -14,14 +14,14 @@ version '1.1.1'
 
 foxloader {
     // forceReload = true
-    modId = "examplemod"
-    modName = "Fox Loader Example Mod"
+    modId = "blockelevator"
+    modName = "BlockElevator"
     modVersion = project.version
-    modDesc = "An example mod for developers!!"
-    clientMod = "com.fox2code.examplemod.ExampleModClient"
-    serverMod = "com.fox2code.examplemod.ExampleModServer"
+    modDesc = "Turn an blocks into elevator"
+    //clientMod = "com.fox2code.examplemod.ExampleModClient"
+    serverMod = "com.kingcolton1.blockelevator.BlockElevatorServer"
     // Development tools don't like that both client and server define
     // the same classes, so uncomment to disable the side inclusion.
-    // includeClient = false
+    includeClient = false
     // includeServer = false
 }

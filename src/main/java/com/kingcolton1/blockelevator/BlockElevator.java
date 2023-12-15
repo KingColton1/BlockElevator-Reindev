@@ -1,7 +1,6 @@
 package com.kingcolton1.blockelevator;
 
 import com.fox2code.foxloader.loader.Mod;
-import com.fox2code.foxloader.registry.*;
 
 public class BlockElevator extends Mod {
     @Override

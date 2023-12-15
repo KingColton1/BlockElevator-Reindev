@@ -1,7 +1,6 @@
 package com.kingcolton1.blockelevator.server.mixins;
 
 import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.BlockCheeseWheel;
 import net.minecraft.src.game.block.Material;
 import net.minecraft.src.game.entity.other.EntityItem;
 import net.minecraft.src.game.entity.player.EntityPlayer;
@@ -21,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.kingcolton1.blockelevator.BlockElevatorFunc;
 import com.kingcolton1.blockelevator.BlockElevator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(value = EntityPlayerMP.class, remap = false)
@@ -44,8 +44,11 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
 		super(world);
 	}
 
-	public static World world;
+	private static World world;
+	private static Block blockName = Block.blocksList[41];
 
+	/* This function cause instant crash on join. Requires total rewrite to avoid similar situation.
+	/
 	@Inject(method= "onLivingUpdate()V", at = @At("TAIL"))
 	private void elevatorTick(CallbackInfo ci){
 		cooldown--;
@@ -61,26 +64,24 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
 				int blockY = (int) cube.minY;
 				int blockZ = (int) cube.minZ;
 
-				if(world.getBlockId(blockX, blockY, blockZ) instanceof BlockElevatorFunc) {
+				if (world.getBlockId(blockX, blockY, blockZ) == blockName.blockID) {
 					elevatorBlockX = blockX;
 					elevatorBlockY = blockY;
 					elevatorBlockZ = blockZ;
 				}
 
-				if(isSneaking() && cooldown <= 0 && world.getBlockId(blockX, blockY, blockZ) instanceof BlockElevatorFunc){
+				if (isSneaking() && cooldown <= 0 && world.getBlockId(blockX, blockY, blockZ) == blockName.blockID){
 					BlockElevatorFunc.sneak(world, blockX, blockY, blockZ, (EntityPlayerMP)(Object)this);
-					cooldown = 2; /*ElevatorsMod.config.getInt("ElevatorCooldown");*/
+					cooldown = 0;
 					return;
 				}
 			}
 		}
 
-
-		if(dy > 0.2 && cooldown <= 0 && Math.abs(this.x - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(this.z - (elevatorBlockZ+0.5f)) < 0.5f && this.y - elevatorBlockY > 0){
-
+		if (dy > 0.2 && cooldown <= 0 && Math.abs(this.x - (elevatorBlockX + 0.5f)) < 0.5f && Math.abs(this.z - (elevatorBlockZ + 0.5f)) < 0.5f && this.y - elevatorBlockY > 0){
 			BlockElevatorFunc.jump(world, elevatorBlockX, elevatorBlockY, elevatorBlockZ, (EntityPlayerMP)(Object)this);
-			cooldown = 2; /*ElevatorsMod.config.getInt("ElevatorCooldown");*/
+			cooldown = 0;
 			return;
 		}
-	}
+	}*/
 }
