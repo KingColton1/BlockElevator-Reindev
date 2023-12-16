@@ -1,53 +1,66 @@
 package com.kingcolton1.blockelevator;
 
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.Material;
-import net.minecraft.src.game.entity.player.EntityPlayerMP;
-import net.minecraft.src.game.level.World;
-import net.minecraft.src.server.physics.AxisAlignedBB;
+import com.kingcolton1.blockelevator.API.Block;
+import com.kingcolton1.blockelevator.API.BlockFace;
+import com.kingcolton1.blockelevator.API.Listener;
+import com.kingcolton1.blockelevator.API.Location;
+import com.kingcolton1.blockelevator.API.Material;
+import com.kingcolton1.blockelevator.API.Player;
+import com.kingcolton1.blockelevator.API.PlayerJumpEvent;
+import com.kingcolton1.blockelevator.API.PlayerToggleSneakEvent;
 
-public class BlockElevatorFunc extends Block {
-    public BlockElevatorFunc(int id, Material material) {
-        super(id, material);
+
+public class BlockElevatorFunc implements Listener {
+    public BlockElevatorBlock elevatorBlock;
+
+    private boolean doTeleport(Block source, Player player, int y) {
+        Block target = source.getWorld().getBlockAt(source.getX(), y, source.getZ());
+        if (target.getType() != elevatorBlock.getMaterial()) {
+            return false;
+        }
+        if (!TeleportUtil.checkForTeleportSpace(target.getRelative(BlockFace.UP).getLocation())) {
+            return false;
+        }
+        Location adjustedLocation = target.getLocation().clone();
+        adjustedLocation.add(0.5, 1.02, 0.5);
+        adjustedLocation.setYaw(player.getLocation().getYaw());
+        adjustedLocation.setPitch(player.getLocation().getPitch());
+        player.teleport(adjustedLocation);
+        return true;
     }
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(int x, int y, int z) {
-        float f = 0.075F;
-        return AxisAlignedBB.getBoundingBoxFromPool(x, y, z, x + 1, (float)(y + 1) - f, z + 1);
-    }
-
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    public static Block blockName = Block.blocksList[41];
-
-    public static void jump(World world, int x, int y, int z, EntityPlayerMP player) {
-		for (int y2 = y + 1; y2 < 255; y2++) {
-            if (world.getBlockId(x, y, z) == blockName.blockID) {
-                player.playerNetServerHandler.teleportTo(x + 0.5, y2 + 1, z + 0.5, player.rotationYaw, player.rotationPitch);
-				break;
-            }
-
-			else if (world.getBlockId(x, y2, z) != 0) {
-				break;
-			}
-		}
-	}
-
-    public static void sneak(World world, int x, int y, int z, EntityPlayerMP player) {
-        if (!player.isSneaking()) {
+    public void elevatorBlockSneak(PlayerToggleSneakEvent eventSneak) {
+        Block below = eventSneak.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
+        if (below.getType() != elevatorBlock.getMaterial()) {
             return;
         }
+        if (!eventSneak.isSneaking()) {
+            return;
+        }
+        for (int y = (below.getY() - 1); y > below.getWorld().getMinHeight(); y--) {
+            if (doTeleport(below, eventSneak.getPlayer(), y)) {
+                return;
+            }
+        }
 
-		for (int y2 = y - 1; y2 > 0; y2--) {
-			if (world.getBlockId(x, y2, z) == blockName.blockID) {
-				player.playerNetServerHandler.teleportTo(x + 0.5, y2 + 1, z + 0.5, player.rotationYaw, player.rotationPitch);
-				break;
-			}
-			else if (world.getBlockId(x, y2, z) != 0) {
-				break;
-			}
-		}
-	}
+        //String message = String.format("No %s block to teleport you down to. Jump to teleport up instead.", this.elevatorBlock);
+
+        //eventSneak.getPlayer().sendMessage(Component.text(message).color(NamedTextColor.RED));
+    }
+
+    public void elevatorBlockJump(PlayerJumpEvent eventJump) {
+        Block below = eventJump.getFrom().getBlock().getRelative(BlockFace.DOWN);
+        if (below.getType() != elevatorBlock.getMaterial()) {
+            return;
+        }
+        for (int y = below.getY() + 1; y <= below.getWorld().getMaxHeight(); y++) {
+            if (doTeleport(below, eventJump.getPlayer(), y)) {
+                return;
+            }
+        }
+
+        //String message = String.format("No %s block to teleport you up to. Sneak to teleport down instead.", this.elevatorBlock);
+
+        //eventJump.getPlayer().sendMessage(Component.text(message).color(NamedTextColor.RED));
+    }
 }

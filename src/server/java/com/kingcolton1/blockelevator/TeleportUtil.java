@@ -1,8 +1,6 @@
-package com.kingcolton1.blockelevator.server.mixins;
+package com.kingcolton1.blockelevator;
 
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.entity.player.EntityPlayerMP;
-import org.spongepowered.asm.mixin.Mixin;
+import java.util.LinkedList;
 
 import com.kingcolton1.blockelevator.API.Block;
 import com.kingcolton1.blockelevator.API.BlockFace;
@@ -12,16 +10,8 @@ import com.kingcolton1.blockelevator.API.Player;
 import com.kingcolton1.blockelevator.API.Vector;
 import com.kingcolton1.blockelevator.API.World;
 
-import java.util.LinkedList;
-
-@Mixin(value = EntityPlayerMP.class, remap = false)
-public abstract class EntityPlayerMPMixin extends EntityPlayer {
-
-	public EntityPlayerMPMixin(World world) {
-		super((net.minecraft.src.game.level.World) world);
-	}
-
-	private static boolean checkForTeleportSpace(Location loc) {
+public class TeleportUtil {
+    public static boolean checkForTeleportSpace(Location loc) {
 		final Block block = loc.getBlock();
 		final Material mat = block.getType();
 		if (mat.isSolid()) {
