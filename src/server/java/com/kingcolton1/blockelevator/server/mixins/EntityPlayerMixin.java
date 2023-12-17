@@ -1,6 +1,5 @@
 package com.kingcolton1.blockelevator.server.mixins;
 
-import net.minecraft.src.game.block.Block;
 import net.minecraft.src.game.entity.EntityLiving;
 import net.minecraft.src.game.entity.player.EntityPlayer;
 import net.minecraft.src.server.physics.AxisAlignedBB;
@@ -13,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kingcolton1.blockelevator.API.AssignBlock;
 import com.kingcolton1.blockelevator.BlockElevatorFunc;
-import com.kingcolton1.blockelevator.BlockElevatorServer;
 
 import java.util.List;
 

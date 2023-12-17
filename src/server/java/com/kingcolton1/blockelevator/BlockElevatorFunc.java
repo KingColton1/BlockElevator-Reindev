@@ -12,6 +12,8 @@ public class BlockElevatorFunc extends AssignBlock {
         super(id, material);
     }
 
+	public static AssignBlock api;
+
     public static void jump(World world, int x, int y, int z, EntityPlayer player){
 		int counter = 2;
 		for(int y2 = y+1; y2 < 255; y2++){
@@ -21,7 +23,7 @@ public class BlockElevatorFunc extends AssignBlock {
 					return;
 				}
 			}
-			if(world.getBlockId(x, y2, z) == BlockElevatorFunc.class.getConstructors().hashCode()){
+			if(world.getBlockId(x, y2, z) == api.getID()){
 				teleport(x+0.5, y2+1, z+0.5, player);
 
 				break;
@@ -37,7 +39,7 @@ public class BlockElevatorFunc extends AssignBlock {
 					return;
 				}
 			}
-			if(world.getBlockId(x, y2, z) == BlockElevatorFunc.class.getConstructors().hashCode()){
+			if(world.getBlockId(x, y2, z) == api.getID()){
 				teleport(x+0.5, y2+1, z+0.5, player);
 				break;
 			}
