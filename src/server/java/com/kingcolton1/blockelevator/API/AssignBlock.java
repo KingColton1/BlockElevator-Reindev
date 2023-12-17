@@ -6,13 +6,20 @@ public class AssignBlock {
     private int id = 0;
     private Block material;
 
-    public AssignBlock(int id, Block material) {
-        this.id = id;
+    public AssignBlock(Block material) {
         this.material = material;
     }
 
+    private int convertMaterialToID(Block material) {
+        this.material = material;
+        int converted = this.material.blockID;
+        this.id = converted;
+
+        return converted;
+    }
+
     public int getID() {
-        return this.id;
+        return convertMaterialToID(material);
     }
 
     public Block getMaterial() {

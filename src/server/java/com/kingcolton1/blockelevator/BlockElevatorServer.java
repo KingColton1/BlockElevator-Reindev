@@ -12,7 +12,7 @@ public class BlockElevatorServer extends BlockElevator implements ServerMod {
     public void onInit() {
         System.out.println("BlockElevator initialized");
 
-        elevator = new AssignBlock(41, Block.blockGold);
-        System.out.println(elevator.getMaterial());
+        elevator = new AssignBlock(Block.blockGold);
+        System.out.println(elevator.getID());
     }
 }

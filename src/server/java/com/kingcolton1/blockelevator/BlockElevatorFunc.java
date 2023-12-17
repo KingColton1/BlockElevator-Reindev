@@ -8,8 +8,8 @@ import net.minecraft.src.game.level.World;
 import com.kingcolton1.blockelevator.API.AssignBlock;
 
 public class BlockElevatorFunc extends AssignBlock {
-    public BlockElevatorFunc(int id, Block material) {
-        super(id, material);
+    public BlockElevatorFunc(Block material) {
+        super(material);
     }
 
 	public static AssignBlock api;
@@ -19,7 +19,7 @@ public class BlockElevatorFunc extends AssignBlock {
 		for(int y2 = y+1; y2 < 255; y2++){
 			if(counter > 0){
 				counter--;
-				if (world.getBlockId(x, y2, z) == 437){
+				if (world.getBlockId(x, y2, z) == api.getID()){
 					return;
 				}
 			}
@@ -35,7 +35,7 @@ public class BlockElevatorFunc extends AssignBlock {
 		for(int y2 = y-1; y2 > 0; y2--){
 			if(counter > 0){
 				counter--;
-				if (world.getBlockId(x, y2, z) == 437){
+				if (world.getBlockId(x, y2, z) == api.getID()){
 					return;
 				}
 			}
