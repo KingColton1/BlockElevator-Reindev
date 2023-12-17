@@ -4,6 +4,6 @@
   "package": "com.kingcolton1.blockelevator.server.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "EntityPlayerMPMixin"
+    "EntityPlayerMixin"
   ]
 }

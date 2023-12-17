@@ -2,16 +2,18 @@ package com.kingcolton1.blockelevator;
 
 import com.fox2code.foxloader.loader.ServerMod;
 import com.fox2code.foxloader.registry.*;
-import com.kingcolton1.blockelevator.API.Listener;
-import com.kingcolton1.blockelevator.API.Material;
+import net.minecraft.src.game.block.Block;
+
+import com.kingcolton1.blockelevator.API.AssignBlock;
 
 public class BlockElevatorServer extends BlockElevator implements ServerMod {
-    public static BlockElevatorBlock elevator;
+    public static AssignBlock elevator;
 
     @Override
     public void onInit() {
         System.out.println("BlockElevator initialized");
 
-        elevator = new BlockElevatorBlock(41, Material.blockGold);
+        elevator = new AssignBlock(41, Block.blockGold);
+        System.out.println(elevator.getMaterial());
     }
 }
