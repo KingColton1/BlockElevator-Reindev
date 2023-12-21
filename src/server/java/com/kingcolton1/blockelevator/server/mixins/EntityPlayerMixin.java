@@ -53,7 +53,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 				int blockZ = (int) cube.minZ;
 				int blockUnderFeet = worldObj.getBlockId(blockX, blockY, blockZ);
 
-				if(blockUnderFeet == api.getID()) {
+				if(blockUnderFeet == api.registerBlockId()) {
 					stoodOnElevator = true;
 					elevatorBlockX = blockX;
 					elevatorBlockY = blockY;
@@ -63,7 +63,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 					cooldown += 1;
 				}
 
-				if(isSneaking() && cooldown <= 0 && blockUnderFeet == api.getID() && stoodOnElevator){
+				if(isSneaking() && cooldown <= 0 && blockUnderFeet == api.registerBlockId() && stoodOnElevator){
 					BlockElevatorFunc.sneak(worldObj, blockX, blockY, blockZ, thisAs);
 					stoodOnElevator = false;
 					return;

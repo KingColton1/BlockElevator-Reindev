@@ -19,11 +19,11 @@ public class BlockElevatorFunc extends AssignBlock {
 		for(int y2 = y+1; y2 < 255; y2++){
 			if(counter > 0){
 				counter--;
-				if (world.getBlockId(x, y2, z) == api.getID()){
+				if (world.getBlockId(x, y2, z) == api.registerBlockId()){
 					return;
 				}
 			}
-			if(world.getBlockId(x, y2, z) == api.getID()){
+			if(world.getBlockId(x, y2, z) == api.registerBlockId()){
 				teleport(x+0.5, y2+1, z+0.5, player);
 
 				break;
@@ -35,11 +35,11 @@ public class BlockElevatorFunc extends AssignBlock {
 		for(int y2 = y-1; y2 > 0; y2--){
 			if(counter > 0){
 				counter--;
-				if (world.getBlockId(x, y2, z) == api.getID()){
+				if (world.getBlockId(x, y2, z) == api.registerBlockId()){
 					return;
 				}
 			}
-			if(world.getBlockId(x, y2, z) == api.getID()){
+			if(world.getBlockId(x, y2, z) == api.registerBlockId()){
 				teleport(x+0.5, y2+1, z+0.5, player);
 				break;
 			}
