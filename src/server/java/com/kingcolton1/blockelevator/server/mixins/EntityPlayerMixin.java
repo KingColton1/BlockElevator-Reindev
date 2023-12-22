@@ -52,18 +52,21 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 				int blockY = (int) cube.minY;
 				int blockZ = (int) cube.minZ;
 				int blockUnderFeet = worldObj.getBlockId(blockX, blockY, blockZ);
+				System.out.println(blockUnderFeet);
 
-				if(blockUnderFeet == api.registerBlockId()) {
+				if(blockUnderFeet == api.getID()) {
+					System.out.println("!! Gold block FOUND !!");
 					stoodOnElevator = true;
 					elevatorBlockX = blockX;
 					elevatorBlockY = blockY;
 					elevatorBlockZ = blockZ;
 				} else if (blockUnderFeet != 0 || worldObj.getBlockId(blockX, blockY, blockZ) == 0) {
+					System.out.println("did not find...");
 					stoodOnElevator = false;
 					cooldown += 1;
 				}
 
-				if(isSneaking() && cooldown <= 0 && blockUnderFeet == api.registerBlockId() && stoodOnElevator){
+				if(isSneaking() && cooldown <= 0 && blockUnderFeet == api.getID() && stoodOnElevator){
 					BlockElevatorFunc.sneak(worldObj, blockX, blockY, blockZ, thisAs);
 					stoodOnElevator = false;
 					return;

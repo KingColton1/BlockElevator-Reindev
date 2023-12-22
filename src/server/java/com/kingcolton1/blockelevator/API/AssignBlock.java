@@ -1,12 +1,10 @@
 package com.kingcolton1.blockelevator.API;
 
-import com.fox2code.foxloader.registry.RegisteredBlock;
 import net.minecraft.src.game.block.Block;
 
 public class AssignBlock {
     private int id = 0;
     private Block material;
-    private RegisteredBlock registeredBlock;
 
     public AssignBlock(Block material) {
         this.material = material;
@@ -26,11 +24,5 @@ public class AssignBlock {
 
     public Block getMaterial() {
         return this.material;
-    }
-
-    public int registerBlockId() {
-        int id = getID();
-        id = registeredBlock.getRegisteredBlockId();
-        return id;
     }
 }
