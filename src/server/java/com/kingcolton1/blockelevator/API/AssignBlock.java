@@ -3,7 +3,6 @@ package com.kingcolton1.blockelevator.API;
 import net.minecraft.src.game.block.Block;
 
 public class AssignBlock {
-    private int id = 0;
     private Block material;
 
     public AssignBlock(Block material) {
@@ -13,7 +12,6 @@ public class AssignBlock {
     private int convertMaterialToID(Block material) {
         this.material = material;
         int converted = this.material.blockID;
-        this.id = converted;
 
         return converted;
     }
