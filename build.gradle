@@ -10,7 +10,7 @@ buildscript {
 
 apply plugin: 'foxloader.dev'
 
-version '1.1.1'
+version '1.0.0'
 
 foxloader {
     // forceReload = true
@@ -18,7 +18,7 @@ foxloader {
     modName = "BlockElevator"
     modVersion = project.version
     modDesc = "Turn an blocks into elevator"
-    //clientMod = "com.fox2code.examplemod.ExampleModClient"
+    // clientMod = "com.fox2code.examplemod.BlockElevatorClient"
     serverMod = "com.kingcolton1.blockelevator.BlockElevatorServer"
     // Development tools don't like that both client and server define
     // the same classes, so uncomment to disable the side inclusion.
