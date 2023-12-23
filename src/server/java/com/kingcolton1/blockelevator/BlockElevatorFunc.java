@@ -13,6 +13,7 @@ public class BlockElevatorFunc extends AssignBlock {
     }
 
 	public static AssignBlock api;
+	public static String test;
 
     public static void jump(World world, int x, int y, int z, EntityPlayer player) {
 		int counter = 2;
