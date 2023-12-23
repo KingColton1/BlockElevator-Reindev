@@ -1,15 +1,14 @@
-package com.kingcolton1.blockelevator;
+package com.kingcolton1.blockelevator.API;
 
 import net.minecraft.src.game.block.Block;
+import net.minecraft.src.game.block.Material;
 import net.minecraft.src.game.entity.player.EntityPlayer;
 import net.minecraft.src.game.entity.player.EntityPlayerMP;
 import net.minecraft.src.game.level.World;
 
-import com.kingcolton1.blockelevator.API.AssignBlock;
-
-public class BlockElevatorFunc extends AssignBlock {
-    public BlockElevatorFunc(Block material) {
-        super(material);
+public class ElevatorBlock extends Block {
+    public ElevatorBlock(int id, Material material) {
+        super(id, material);
     }
 
 	public static AssignBlock api;
@@ -20,6 +19,14 @@ public class BlockElevatorFunc extends AssignBlock {
 		for (int y2 = y+1; y2 < 255; y2++) {
 			if (counter > 0){
 				counter--;
+                
+                // Unfortunately ReIndev doesn't include world.getBlock() for some reason, making it more difficult
+                // to work with finding coordinate of a specific block.
+                // ReIndev developers, please add world.getBlock()!
+                // Currently I am having exceedingly trouble with "world.getBlockId" parts
+                // as they seemingly don't respond to any of the event.
+                // I can't use ElevatorBlock as it extends to Block but is NOT compatible with world.getBlockId.
+                // world.getBlock WOULD be compatible with Block instead of this workaround that isn't even working!
 				if (world.getBlockId(x, y2, z) == api.getID()) {
 					return;
 				}

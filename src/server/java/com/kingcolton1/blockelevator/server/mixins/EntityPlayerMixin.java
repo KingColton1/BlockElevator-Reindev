@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kingcolton1.blockelevator.API.AssignBlock;
-import com.kingcolton1.blockelevator.BlockElevatorFunc;
+import com.kingcolton1.blockelevator.API.ElevatorBlock;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -68,7 +68,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 				}
 
 				if (isSneaking() && cooldown <= 0 && blockUnderFeet == api.getID() && stoodOnElevator) {
-					BlockElevatorFunc.sneak(worldObj, blockX, blockY, blockZ, thisAs);
+					ElevatorBlock.sneak(worldObj, blockX, blockY, blockZ, thisAs);
 					stoodOnElevator = false;
 					return;
 				}
@@ -77,7 +77,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 
 		if (dy > 0.075 &&  cooldown <= 0  && stoodOnElevator && Math.abs(this.posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(this.posZ - (elevatorBlockZ+0.5f)) < 0.5f && this.posY - elevatorBlockY > 0) {
-			BlockElevatorFunc.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
+			ElevatorBlock.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
 			stoodOnElevator = false;
 			return;
 		}
