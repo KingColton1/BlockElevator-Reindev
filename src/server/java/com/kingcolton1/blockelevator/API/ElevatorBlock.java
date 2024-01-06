@@ -17,16 +17,9 @@ public class ElevatorBlock extends Block {
     public static void jump(World world, int x, int y, int z, EntityPlayer player) {
 		int counter = 2;
 		for (int y2 = y+1; y2 < 255; y2++) {
-			if (counter > 0){
+			if (counter > 0) {
 				counter--;
                 
-                // Unfortunately ReIndev doesn't include world.getBlock() for some reason, making it more difficult
-                // to work with finding coordinate of a specific block.
-                // ReIndev developers, please add world.getBlock()!
-                // Currently I am having exceedingly trouble with "world.getBlockId" parts
-                // as they seemingly don't respond to any of the event.
-                // I can't use ElevatorBlock as it extends to Block but is NOT compatible with world.getBlockId.
-                // world.getBlock WOULD be compatible with Block instead of this workaround that isn't even working!
 				if (world.getBlockId(x, y2, z) == api.getID()) {
 					return;
 				}
@@ -58,8 +51,8 @@ public class ElevatorBlock extends Block {
 			EntityPlayerMP playerMP = (EntityPlayerMP)player;
 			playerMP.playerNetServerHandler.teleportTo(x, y, z, 0, 0);
 		} else if (player instanceof EntityPlayer) {
-			EntityPlayer playerSP = (EntityPlayer)player;
-			playerSP.setPosition(x, y + playerSP.height, z);
+			EntityPlayer playerEP = (EntityPlayer)player;
+			playerEP.setPosition(x, y + playerEP.height, z);
 		}
 	}
 }
