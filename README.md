@@ -34,7 +34,8 @@ Example: `/elevatorblocks add obsidian`
 
 ## Known issues / caveats
 - You can be teleported inside a block if there's any above an elevator block
-- You can crouch on the edge of elevator blocks
+- You can trigger moving downward when stood right next to an elevator block
+- It might not trigger properly if you have multiple elevator blocks next to eachother
 - A slab placed on top of an elevator block will not stop it from working
 - If you removed all the blocks registered as elevator blocks with `/elevatorblocks remove ...`, the default gold block will be automatically added when the server restarts
 

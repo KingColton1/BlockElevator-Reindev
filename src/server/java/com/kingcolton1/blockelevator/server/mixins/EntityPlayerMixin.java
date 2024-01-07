@@ -46,9 +46,26 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 			return;
 		}
 
-		final int plrX = (int) posX - 1;
-		final int plrY = (int) posY - 1;
-		final int plrZ = (int) posZ - 1;
+		int plrX = (int) posX - 1;
+		int plrY = (int) posY - 1;
+		int plrZ = (int) posZ - 1;
+
+		final int minX = (int)Math.floor(posX - 0.5d);
+		final int minZ = (int)Math.floor(posZ - 0.5d);
+
+		searchLoop:
+		for (int x = minX; x <= minX + 1; x++){
+			for (int z = minZ; z <= minZ + 1; z++){
+				final int blockID = worldObj.getBlockId(x, plrY, z);
+
+				if (BlockElevatorServer.config.elevatorBlockIDs.contains(blockID)){
+					stoodOnElevator = true;
+					plrX = x;
+					plrZ = z;
+					break searchLoop;
+				}
+			}
+		}
 
 		final int blockIdUnderPlr = worldObj.getBlockId(plrX, plrY, plrZ);
 
