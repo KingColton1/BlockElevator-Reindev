@@ -36,41 +36,39 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 	@Inject(method= "onLivingUpdate()V", at = @At("TAIL"))
 	private void elevatorTick(CallbackInfo ci) {
-		double dy = this.posY-py;
-		py = this.posY;
+		double dy = posY-py;
+		py = posY;
 
-		int plrX = (int) posX;
-		int plrY = (int) posY - 1;
-		int plrZ = (int) posZ - 1;
-		int blockUnderPlr = worldObj.getBlockId(plrX, plrY, plrZ);
+		if (cooldown > 0) {
+			--cooldown;
+			return;
+		}
+
+		final int plrX = (int) posX - 1;
+		final int plrY = (int) posY - 1;
+		final int plrZ = (int) posZ - 1;
+
+		final int blockIdUnderPlr = worldObj.getBlockId(plrX, plrY, plrZ);
 
 		// Assigned block is found, otherwise keep looking for it
-		if (blockUnderPlr == 41) {
+		if (blockIdUnderPlr == 41) {
 			stoodOnElevator = true;
 			elevatorBlockX = plrX;
 			elevatorBlockY = plrY;
 			elevatorBlockZ = plrZ;
-		} else if (blockUnderPlr != 0 || worldObj.getBlockId(plrX, plrY, plrZ) == 0) {
+		} else {
 			stoodOnElevator = false;
 		}
 
 		// Cooldown after use of elevator (jump or sneak)
-		if (cooldown == 0) {
-			// Sneaking detection
-			if (isSneaking() && blockUnderPlr == 41 && stoodOnElevator) {
-				ElevatorBlock.sneak(worldObj, plrX, plrY, plrZ, thisAs);
-				stoodOnElevator = false;
-				cooldown = 15;
-			}
-
-			// Jumping detection
-			if (dy > 0.075 && stoodOnElevator && Math.abs(this.posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(this.posZ - (elevatorBlockZ+0.5f)) < 0.5f && this.posY - elevatorBlockY > 0) {
-				ElevatorBlock.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
-				stoodOnElevator = false;
-				cooldown = 15;
-			}
-		} else {
-			cooldown--;
+		if (isSneaking() && blockIdUnderPlr == 41 && stoodOnElevator) {
+			ElevatorBlock.sneak(worldObj, plrX, plrY, plrZ, thisAs);
+			stoodOnElevator = false;
+			cooldown = 15;
+		} else if (dy > 0.075 && stoodOnElevator && Math.abs(posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(posZ - (elevatorBlockZ+0.5f)) < 0.5f && posY - elevatorBlockY > 0) { // Jumping detection
+			ElevatorBlock.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
+			stoodOnElevator = false;
+			cooldown = 15;
 		}
 	}
 }

@@ -17,39 +17,22 @@ public class ElevatorBlock extends Block {
 	//public static NetworkPlayer chat;
 
     public static void jump(World world, int x, int y, int z, EntityPlayer player) {
-		int counter = 2;
-		for (int y2 = y+1; y2 < 255; y2++) {
-			if (counter > 0) {
-				counter--;
-                
-				if (world.getBlockId(x, y2, z) == 41) {
-					return;
-				}
-				//else {
-				//	chat.displayChatMessage(ChatColors.RED + "There is no gold block above you, try sneaking");
-				//}
-			}
-			if (world.getBlockId(x, y2, z) == 41) {
-				teleport(x+0.5, y2+1, z+0.5, player);
-				break;
+		final int maxYStep = 40; // This is the highest you can reach a successive platform above you
+
+		for (int y2 = y+3; y2 < Math.min(y + maxYStep + 1, world.highestY); y2++){
+			if (world.getBlockId(x, y2, z) == 41){
+				teleport(x + 0.5, y2+1, z+0.5, player);
+				return;
 			}
 		}
 	}
 	public static void sneak(World world, int x, int y, int z, EntityPlayer player) {
-		int counter = 2;
-		for (int y2 = y-1; y2 > 0; y2--) {
-			if (counter > 0) {
-				counter--;
-				if (world.getBlockId(x, y2, z) == 41) {
-					return;
-				}
-				//else {
-				//	chat.displayChatMessage(ChatColors.RED + "There is no gold block below you, try jumping");
-				//}
-			}
-			if (world.getBlockId(x, y2, z) == 41) {
-				teleport(x+0.5, y2+1, z+0.5, player);
-				break;
+		final int maxYStep = 40; // This is the lowest you can reach a platform below you
+
+		for (int y2 = y-1; y2 > Math.max(y - maxYStep - 1, 0); y2--){
+			if (world.getBlockId(x, y2, z) == 41){
+				teleport(x + 0.5, y2+1, z + 0.5, player);
+				return;
 			}
 		}
 	}
