@@ -1,5 +1,7 @@
 package com.kingcolton1.blockelevator.API;
 
+import com.fox2code.foxloader.network.NetworkPlayer;
+import com.fox2code.foxloader.network.ChatColors;
 import net.minecraft.src.game.block.Block;
 import net.minecraft.src.game.block.Material;
 import net.minecraft.src.game.entity.player.EntityPlayer;
@@ -11,8 +13,8 @@ public class ElevatorBlock extends Block {
         super(id, material);
     }
 
-	public static AssignBlock api;
-	public static String test;
+	//public static AssignBlock api;
+	//public static NetworkPlayer chat;
 
     public static void jump(World world, int x, int y, int z, EntityPlayer player) {
 		int counter = 2;
@@ -20,11 +22,14 @@ public class ElevatorBlock extends Block {
 			if (counter > 0) {
 				counter--;
                 
-				if (world.getBlockId(x, y2, z) == api.getID()) {
+				if (world.getBlockId(x, y2, z) == 41) {
 					return;
 				}
+				//else {
+				//	chat.displayChatMessage(ChatColors.RED + "There is no gold block above you, try sneaking");
+				//}
 			}
-			if (world.getBlockId(x, y2, z) == api.getID()) {
+			if (world.getBlockId(x, y2, z) == 41) {
 				teleport(x+0.5, y2+1, z+0.5, player);
 				break;
 			}
@@ -35,11 +40,14 @@ public class ElevatorBlock extends Block {
 		for (int y2 = y-1; y2 > 0; y2--) {
 			if (counter > 0) {
 				counter--;
-				if (world.getBlockId(x, y2, z) == api.getID()) {
+				if (world.getBlockId(x, y2, z) == 41) {
 					return;
 				}
+				//else {
+				//	chat.displayChatMessage(ChatColors.RED + "There is no gold block below you, try jumping");
+				//}
 			}
-			if (world.getBlockId(x, y2, z) == api.getID()) {
+			if (world.getBlockId(x, y2, z) == 41) {
 				teleport(x+0.5, y2+1, z+0.5, player);
 				break;
 			}
@@ -51,8 +59,7 @@ public class ElevatorBlock extends Block {
 			EntityPlayerMP playerMP = (EntityPlayerMP)player;
 			playerMP.playerNetServerHandler.teleportTo(x, y, z, 0, 0);
 		} else if (player instanceof EntityPlayer) {
-			EntityPlayer playerEP = (EntityPlayer)player;
-			playerEP.setPosition(x, y + playerEP.height, z);
+			player.setPosition(x, y + player.height, z);
 		}
 	}
 }

@@ -2,7 +2,6 @@ package com.kingcolton1.blockelevator.server.mixins;
 
 import net.minecraft.src.game.entity.EntityLiving;
 import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.server.physics.AxisAlignedBB;
 import net.minecraft.src.game.level.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,8 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.kingcolton1.blockelevator.API.AssignBlock;
 import com.kingcolton1.blockelevator.API.ElevatorBlock;
-
-import java.util.List;
 
 @Mixin(value = EntityPlayer.class, remap = false)
 public abstract class EntityPlayerMixin extends EntityLiving {
@@ -29,87 +26,51 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 	@Unique
 	protected double py = 0;
 	@Unique
-	protected int cooldown = 0;
+	protected int cooldown = 5;
 	@Unique
 	protected EntityPlayer thisAs = (EntityPlayer)(Object)this;
 	public EntityPlayerMixin(World world) {
 		super(world);
 	}
-    public AssignBlock api;
+	//public AssignBlock api;
 
 	@Inject(method= "onLivingUpdate()V", at = @At("TAIL"))
 	private void elevatorTick(CallbackInfo ci) {
-		cooldown--;
 		double dy = this.posY-py;
 		py = this.posY;
 
-		int plrX = (int) thisAs.playerLocation.x;
-		int plrY = (int) thisAs.playerLocation.y;
-		int plrZ = (int) thisAs.playerLocation.z;
-		int blockUnderPlr = worldObj.getBlockId(plrX, plrY - 1, plrZ);
-		System.out.println(blockUnderPlr);
+		int plrX = (int) posX;
+		int plrY = (int) posY - 1;
+		int plrZ = (int) posZ - 1;
+		int blockUnderPlr = worldObj.getBlockId(plrX, plrY, plrZ);
 
-		if (blockUnderPlr == api.getID()) {
-			System.out.println("!! Gold block FOUND !!");
+		// Assigned block is found, otherwise keep looking for it
+		if (blockUnderPlr == 41) {
 			stoodOnElevator = true;
 			elevatorBlockX = plrX;
-			elevatorBlockY = plrY - 1;
+			elevatorBlockY = plrY;
 			elevatorBlockZ = plrZ;
-		} else if (blockUnderPlr != 0 || worldObj.getBlockId(plrX, plrY - 1, plrZ) == 0) {
-			System.out.println("did not find it...");
+		} else if (blockUnderPlr != 0 || worldObj.getBlockId(plrX, plrY, plrZ) == 0) {
 			stoodOnElevator = false;
-			cooldown += 1;
 		}
 
-		if (isSneaking() && cooldown <= 0 && blockUnderPlr == api.getID() && stoodOnElevator) {
-			System.out.println("Sneaking...");
-			ElevatorBlock.sneak(worldObj, plrX, plrY - 1, plrZ, thisAs);
-			stoodOnElevator = false;
-			return;
-		}
-
-		/*
-		List<AxisAlignedBB> cubes = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(this.posX, -1.0, 0.0));
-		if (!cubes.isEmpty()) {
-			System.out.println("Cube isn't empty!");
-			AxisAlignedBB cube = cubes.get(0);
-			if (cube != null) {
-				System.out.println("Cube isn't null!");
-
-				int blockX = (int) cube.minX;
-				int blockY = (int) cube.minY;
-				int blockZ = (int) cube.minZ;
-				Integer blockUnderFeet = worldObj.getBlockId(blockX, blockY, blockZ);
-				System.out.println(blockUnderFeet.toString());
-
-				if (blockUnderFeet == api.getID()) {
-					System.out.println("!! Gold block FOUND !!");
-					stoodOnElevator = true;
-					elevatorBlockX = blockX;
-					elevatorBlockY = blockY;
-					elevatorBlockZ = blockZ;
-				} else if (blockUnderFeet != 0 || worldObj.getBlockId(blockX, blockY, blockZ) == 0) {
-					System.out.println("did not find it...");
-					stoodOnElevator = false;
-					cooldown += 1;
-				}
-
-				if (isSneaking() && cooldown <= 0 && blockUnderFeet == api.getID() && stoodOnElevator) {
-					System.out.println("Sneaking...");
-					ElevatorBlock.sneak(worldObj, blockX, blockY, blockZ, thisAs);
-					stoodOnElevator = false;
-					return;
-				}
+		// Cooldown after use of elevator (jump or sneak)
+		if (cooldown == 0) {
+			// Sneaking detection
+			if (isSneaking() && blockUnderPlr == 41 && stoodOnElevator) {
+				ElevatorBlock.sneak(worldObj, plrX, plrY, plrZ, thisAs);
+				stoodOnElevator = false;
+				cooldown = 15;
 			}
-		}
-		*/
 
-
-		if (dy > 0.075 &&  cooldown <= 0  && stoodOnElevator && Math.abs(this.posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(this.posZ - (elevatorBlockZ+0.5f)) < 0.5f && this.posY - elevatorBlockY > 0) {
-			System.out.println("Jumping...");
-			ElevatorBlock.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
-			stoodOnElevator = false;
-			return;
+			// Jumping detection
+			if (dy > 0.075 && stoodOnElevator && Math.abs(this.posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(this.posZ - (elevatorBlockZ+0.5f)) < 0.5f && this.posY - elevatorBlockY > 0) {
+				ElevatorBlock.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
+				stoodOnElevator = false;
+				cooldown = 15;
+			}
+		} else {
+			cooldown--;
 		}
 	}
 }
