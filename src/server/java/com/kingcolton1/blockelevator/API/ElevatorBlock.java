@@ -1,5 +1,6 @@
 package com.kingcolton1.blockelevator.API;
 
+import com.fox2code.foxloader.loader.ServerMod;
 import com.fox2code.foxloader.network.NetworkPlayer;
 import com.fox2code.foxloader.network.ChatColors;
 import net.minecraft.src.game.block.Block;
@@ -22,6 +23,7 @@ public class ElevatorBlock extends Block {
 		for (int y2 = y+3; y2 < Math.min(y + maxYStep + 1, world.highestY); y2++){
 			if (world.getBlockId(x, y2, z) == 41){
 				teleport(x + 0.5, y2+1, z+0.5, player);
+				world.playAuxSFX(2020, x, y2, z, 0); // random.pop
 				return;
 			}
 		}
@@ -32,6 +34,7 @@ public class ElevatorBlock extends Block {
 		for (int y2 = y-1; y2 > Math.max(y - maxYStep - 1, 0); y2--){
 			if (world.getBlockId(x, y2, z) == 41){
 				teleport(x + 0.5, y2+1, z + 0.5, player);
+				world.playAuxSFX(900, x, y2, z, 41); // Step sound on a gold block
 				return;
 			}
 		}
