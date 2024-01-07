@@ -6,10 +6,8 @@ This is an direct rewrite of [CivElevator](https://github.com/KingColton1/CivEle
 
 ## USAGE
 
-Due to the limitation in ReIndev's modified core codes of Minecraft, for now you won't be able to customize block unless if you know how to code and directly modify blockId code to change a block to be used as an elevator.
-
-To create an elevator, place block of gold (by default) on bottom and place second block of gold two blocks above or below of first block of gold you placed previously. Then use jump (space bar) to go up if you placed second block above. Or sneak (shift) to go don if you placed second block below. Second block can be placed anywhere in y-height as long as the second block is on same x,z coordinate as first block.
+To create an elevator, place first gold block (default) anywhere (e.g. ground, underground, etc.) and place second gold block more than two blocks above or below of first gold block you placed previously. Then use jump (space bar) to go up if you placed second block above. Or sneak (shift) to go down if you placed second block below. Second block can be placed anywhere in y-height as long as the second block is on same x,z coordinate as first block.
 
 ## CONTRIBUTION
 
-To contribute, please fork this repo and modify or fix whatever it need to improve BlockElevator. Then you may make a pull request to main branch and I will review before I approve to merge into main.
+To contribute, please fork this repo and modify or fix as you deem necessary to improve BlockElevator. Then you may make a pull request to main branch and I will review before I approve to merge into main.
