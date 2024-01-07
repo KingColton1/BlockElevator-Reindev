@@ -13,7 +13,7 @@ NOTE: You can only move up to 40 blocks up or down before you need to place down
 Shows the config
 
 `/elevator enabled <true or false>`\
-Enabled/disables elevators (Default: **true**)
+Enables/disables elevators (Default: **true**)
 
 `/elevator cooldownticks <integer number>`\
 Set the cooldown in ticks (1/20 of a second), set to 0 for instant (Default: **15**)
