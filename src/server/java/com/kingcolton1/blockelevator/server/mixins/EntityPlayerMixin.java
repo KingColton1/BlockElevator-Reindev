@@ -42,7 +42,33 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 		cooldown--;
 		double dy = this.posY-py;
 		py = this.posY;
-		
+
+		int plrX = (int) thisAs.playerLocation.x;
+		int plrY = (int) thisAs.playerLocation.y;
+		int plrZ = (int) thisAs.playerLocation.z;
+		int blockUnderPlr = worldObj.getBlockId(plrX, plrY - 1, plrZ);
+		System.out.println(blockUnderPlr);
+
+		if (blockUnderPlr == api.getID()) {
+			System.out.println("!! Gold block FOUND !!");
+			stoodOnElevator = true;
+			elevatorBlockX = plrX;
+			elevatorBlockY = plrY - 1;
+			elevatorBlockZ = plrZ;
+		} else if (blockUnderPlr != 0 || worldObj.getBlockId(plrX, plrY - 1, plrZ) == 0) {
+			System.out.println("did not find it...");
+			stoodOnElevator = false;
+			cooldown += 1;
+		}
+
+		if (isSneaking() && cooldown <= 0 && blockUnderPlr == api.getID() && stoodOnElevator) {
+			System.out.println("Sneaking...");
+			ElevatorBlock.sneak(worldObj, plrX, plrY - 1, plrZ, thisAs);
+			stoodOnElevator = false;
+			return;
+		}
+
+		/*
 		List<AxisAlignedBB> cubes = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(this.posX, -1.0, 0.0));
 		if (!cubes.isEmpty()) {
 			System.out.println("Cube isn't empty!");
@@ -76,6 +102,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 				}
 			}
 		}
+		*/
 
 
 		if (dy > 0.075 &&  cooldown <= 0  && stoodOnElevator && Math.abs(this.posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(this.posZ - (elevatorBlockZ+0.5f)) < 0.5f && this.posY - elevatorBlockY > 0) {
