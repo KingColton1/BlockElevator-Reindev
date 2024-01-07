@@ -57,7 +57,7 @@ public class ElevatorBlock extends Block {
 	public static void teleport(double x, double y, double z, EntityPlayer player) {
 		if (player instanceof EntityPlayerMP) {
 			EntityPlayerMP playerMP = (EntityPlayerMP)player;
-			playerMP.playerNetServerHandler.teleportTo(x, y, z, 0, 0);
+			playerMP.playerNetServerHandler.teleportTo(x, y, z, playerMP.rotationYaw, playerMP.rotationPitch);
 		} else if (player instanceof EntityPlayer) {
 			player.setPosition(x, y + player.height, z);
 		}
