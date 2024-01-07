@@ -8,27 +8,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Config {
-/*    public boolean enabled = true;
-    public List<Integer> elevatorBlockIDs = new ArrayList<>();
-    public Integer coolDownTicks = null;
-    public Integer maxYStep = null;
-    public Double dYRequiredForJump = null;*/
-
     public boolean enabled = true;
     public List<Integer> elevatorBlockIDs = Lists.newArrayList(Block.blockGold.blockID);
     public Integer coolDownTicks = 15;
     public Integer maxYStep = 40;
     public Double dYRequiredForJump = 0.075;
-
-    private final List<Integer> defaultElevatorBlockIDs = Lists.newArrayList(Block.blockGold.blockID);
-    private final Integer defaultCoolDownTicks = 15;
-    private final Integer defaultMaxYStep = 40;
-    private final Double defaultDYRequiredForJump = 0.075;
 
     public final String enabledConfigName = "enabled";
     public final String elevatorBlocksConfigName = "elevatorblocks";
@@ -62,11 +50,6 @@ public class Config {
         try {
             scanner = new Scanner(new File(filename));
         } catch (FileNotFoundException e) {
-            // Config not found, let's use the default values
-            /*elevatorBlockIDs = defaultElevatorBlockIDs;
-            coolDownTicks = defaultCoolDownTicks;
-            maxYStep = defaultMaxYStep;
-            dYRequiredForJump = defaultDYRequiredForJump;*/
             return;
         }
 
@@ -116,11 +99,5 @@ public class Config {
                 enabled = Boolean.parseBoolean(value);
             }
         }
-
-        // For any values unspecified, let's use the default values
-        /*if (elevatorBlockIDs.isEmpty()) elevatorBlockIDs = defaultElevatorBlockIDs;
-        if (coolDownTicks == null)      coolDownTicks = defaultCoolDownTicks;
-        if (maxYStep == null)           maxYStep = defaultMaxYStep;
-        if (dYRequiredForJump == null)  dYRequiredForJump = defaultDYRequiredForJump;*/
     }
 }
