@@ -1,27 +1,15 @@
-package com.kingcolton1.blockelevator.API;
+package com.kingcolton1.blockelevator;
 
 import com.fox2code.foxloader.loader.ServerMod;
-import com.fox2code.foxloader.network.NetworkPlayer;
-import com.fox2code.foxloader.network.ChatColors;
-import net.minecraft.src.game.block.Block;
-import net.minecraft.src.game.block.Material;
+import com.kingcolton1.blockelevator.BlockElevatorServer;
 import net.minecraft.src.game.entity.player.EntityPlayer;
 import net.minecraft.src.game.entity.player.EntityPlayerMP;
 import net.minecraft.src.game.level.World;
 
-public class ElevatorBlock extends Block {
-    public ElevatorBlock(int id, Material material) {
-        super(id, material);
-    }
-
-	//public static AssignBlock api;
-	//public static NetworkPlayer chat;
-
+public class Elevator {
     public static void jump(World world, int x, int y, int z, EntityPlayer player) {
-		final int maxYStep = 40; // This is the highest you can reach a successive platform above you
-
-		for (int y2 = y+3; y2 < Math.min(y + maxYStep + 1, world.highestY); y2++){
-			if (world.getBlockId(x, y2, z) == 41){
+		for (int y2 = y+3; y2 < Math.min(y + BlockElevatorServer.config.maxYStep + 1, world.highestY); y2++){
+			if (BlockElevatorServer.config.elevatorBlockIDs.contains(world.getBlockId(x, y2, z))){
 				teleport(x + 0.5, y2+1, z+0.5, player);
 				world.playAuxSFX(2020, x, y2, z, 0); // random.pop
 				return;
@@ -29,12 +17,11 @@ public class ElevatorBlock extends Block {
 		}
 	}
 	public static void sneak(World world, int x, int y, int z, EntityPlayer player) {
-		final int maxYStep = 40; // This is the lowest you can reach a platform below you
-
-		for (int y2 = y-1; y2 > Math.max(y - maxYStep - 1, 0); y2--){
-			if (world.getBlockId(x, y2, z) == 41){
+		for (int y2 = y-1; y2 > Math.max(y - BlockElevatorServer.config.maxYStep - 1, 0); y2--){
+			int blockID = world.getBlockId(x, y2, z);
+			if (BlockElevatorServer.config.elevatorBlockIDs.contains(blockID)){
 				teleport(x + 0.5, y2+1, z + 0.5, player);
-				world.playAuxSFX(900, x, y2, z, 41); // Step sound on a gold block
+				world.playAuxSFX(900, x, y2, z, blockID); // Step sound of the block below
 				return;
 			}
 		}
