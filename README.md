@@ -9,7 +9,7 @@ To create an elevator, place first gold block (default) anywhere (e.g. ground, u
 NOTE: You can only move up to 40 blocks up or down before you need to place down another elevator block. 
 
 ## Commands
-`/elevator` (OP not required, but is for the other commands)\
+`/elevator` (OP not required, but is for the commands below)\
 Shows the config
 
 `/elevator enabled <true or false>`\
@@ -25,7 +25,7 @@ Set the max space you can have between elevator blocks (Default: **40**)
 Set the deltaY per tick threshold at which jumping will trigger an upward teleport\
 Essentially, how instant a jump will trigger an elevator. Set to 0 for instant (Default: **0.075**)
 
-`/elevatorblocks` (OP not required, but is for the other commands)\
+`/elevatorblocks` (OP not required, but is for the commands below)\
 List the blocks considered elevator blocks
 
 `/elevatorblocks <add/remove> <block name or id>`\
