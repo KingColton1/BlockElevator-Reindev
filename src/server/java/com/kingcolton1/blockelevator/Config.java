@@ -28,15 +28,15 @@ public class Config {
         try{
             FileWriter fileWriter = new FileWriter(filename);
 
-            fileWriter.write(enabledConfigName + "=" + enabled + "\n");
+            fileWriter.write(enabledConfigName + "=" + enabled + "\n\n");
 
             fileWriter.write(elevatorBlocksConfigName + "=");
             for (Integer blockID : elevatorBlockIDs)
                 fileWriter.write(blockID + ",");
-            fileWriter.write("\n");
-
-            fileWriter.write(coolDownTicksConfigName + "=" + coolDownTicks + "\n");
-            fileWriter.write(maxYStepConfigName + "=" + maxYStep + "\n");
+            fileWriter.write("\n\n");
+            
+            fileWriter.write(coolDownTicksConfigName + "=" + coolDownTicks + "\n\n");
+            fileWriter.write(maxYStepConfigName + "=" + maxYStep + "\n\n");
             fileWriter.write(dYRequiredForJumpConfigName + "=" + dYRequiredForJump + "\n");
 
             fileWriter.close();

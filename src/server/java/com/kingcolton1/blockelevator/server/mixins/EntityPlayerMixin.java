@@ -1,5 +1,6 @@
 package com.kingcolton1.blockelevator.server.mixins;
 
+import com.fox2code.foxloader.network.NetworkPlayer;
 import com.kingcolton1.blockelevator.BlockElevatorServer;
 import net.minecraft.src.game.entity.EntityLiving;
 import net.minecraft.src.game.entity.player.EntityPlayer;
@@ -81,11 +82,11 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 		// Cooldown after use of elevator (jump or sneak)
 		if (isSneaking() && stoodOnElevator) {
-			Elevator.sneak(worldObj, plrX, plrY, plrZ, thisAs);
+			Elevator.sneak(worldObj, plrX, plrY, plrZ, thisAs, (NetworkPlayer)thisAs);
 			stoodOnElevator = false;
 			cooldown = BlockElevatorServer.config.coolDownTicks;
 		} else if (dy > BlockElevatorServer.config.dYRequiredForJump && stoodOnElevator && Math.abs(posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(posZ - (elevatorBlockZ+0.5f)) < 0.5f && posY - elevatorBlockY > 0) { // Jumping detection
-			Elevator.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
+			Elevator.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs, (NetworkPlayer)thisAs);
 			stoodOnElevator = false;
 			cooldown = BlockElevatorServer.config.coolDownTicks;
 		}
