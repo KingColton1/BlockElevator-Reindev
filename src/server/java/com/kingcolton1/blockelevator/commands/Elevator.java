@@ -50,13 +50,13 @@ public class Elevator extends CommandCompat {
         try {
             final String isNow = ChatColors.GREEN + " is now " + ChatColors.GRAY;
             // Pretty messy
-            if (name.equals(BlockElevatorServer.config.enabledConfigName)){
+            if (name.equalsIgnoreCase(BlockElevatorServer.config.enabledConfigName)){
                 BlockElevatorServer.config.enabled = Boolean.parseBoolean(value);
                 commandExecutor.displayChatMessage(BlockElevatorServer.config.enabledConfigName + isNow + BlockElevatorServer.config.enabled);
-            } else if (name.equals(BlockElevatorServer.config.coolDownTicksConfigName)) {
+            } else if (name.equalsIgnoreCase(BlockElevatorServer.config.coolDownTicksConfigName)) {
                 BlockElevatorServer.config.coolDownTicks = Integer.parseInt(value);
                 commandExecutor.displayChatMessage(BlockElevatorServer.config.coolDownTicksConfigName + isNow + BlockElevatorServer.config.coolDownTicks);
-            } else if (name.equals(BlockElevatorServer.config.maxYStepConfigName)) {
+            } else if (name.equalsIgnoreCase(BlockElevatorServer.config.maxYStepConfigName)) {
                 if (Integer.parseInt(value) < 3){
                     commandExecutor.displayChatMessage(ChatColors.YELLOW + BlockElevatorServer.config.maxYStepConfigName + " Can't be set lower than 3.");
                     return;
@@ -64,7 +64,7 @@ public class Elevator extends CommandCompat {
 
                 BlockElevatorServer.config.maxYStep = Integer.parseInt(value);
                 commandExecutor.displayChatMessage(BlockElevatorServer.config.maxYStepConfigName + isNow + BlockElevatorServer.config.maxYStep);
-            } else if (name.equals(BlockElevatorServer.config.dYRequiredForJumpConfigName)) {
+            } else if (name.equalsIgnoreCase(BlockElevatorServer.config.dYRequiredForJumpConfigName)) {
                 BlockElevatorServer.config.dYRequiredForJump = Double.parseDouble(value);
                 commandExecutor.displayChatMessage(BlockElevatorServer.config.dYRequiredForJumpConfigName + isNow + BlockElevatorServer.config.dYRequiredForJump);
             }
