@@ -73,7 +73,7 @@ public class ElevatorBlocks extends CommandCompat {
             return;
         }
 
-        if (addOrRemove.equals("add")){
+        if (addOrRemove.equalsIgnoreCase("add")){
             if (BlockElevatorServer.config.elevatorBlockIDs.contains(blockID)){
                 commandExecutor.displayChatMessage(ChatColors.RED + "The block " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.RED + " (id " + ChatColors.RESET + blockID + ChatColors.RED + ") is already an elevator block");
                 return;
@@ -81,7 +81,7 @@ public class ElevatorBlocks extends CommandCompat {
 
             BlockElevatorServer.config.elevatorBlockIDs.add(blockID);
             commandExecutor.displayChatMessage(ChatColors.GREEN + "Added " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ") as an elevator block!");
-        } else if (addOrRemove.equals("remove")){
+        } else if (addOrRemove.equalsIgnoreCase("remove")){
             boolean removed = BlockElevatorServer.config.elevatorBlockIDs.remove((Object)blockID);
             if (removed)
                 commandExecutor.displayChatMessage(ChatColors.GREEN + "Removed " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ") as an elevator block!");
