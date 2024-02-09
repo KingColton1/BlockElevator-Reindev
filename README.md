@@ -1,5 +1,8 @@
 # BlockElevator for ReIndev
-[![CodeFactor](https://www.codefactor.io/repository/github/kingcolton1/blockelevator-reindev/badge)](https://www.codefactor.io/repository/github/kingcolton1/blockelevator-reindev)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/kingcolton1/BlockElevator-Reindev/gradle.yml)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/kingcolton1/BlockElevator-Reindev)
+![GitHub License](https://img.shields.io/github/license/kingcolton1/BlockElevator-Reindev)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/kingcolton1/BlockElevator-Reindev/total)
 
 BlockElevator is a ReIndev FoxLoader mod that turns a block into an elevator to lift you from a block to another block above or below you. It can go as high as you want between two blocks, or add multiple elevator blocks in between two blocks to access more than two floors. You can add as many elevator block as you want as long as your elevator blocks are in the same x,z coordinate, regardless of height.
 
