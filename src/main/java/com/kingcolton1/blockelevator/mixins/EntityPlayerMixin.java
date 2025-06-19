@@ -1,17 +1,16 @@
-package com.kingcolton1.blockelevator.server.mixins;
+package com.kingcolton1.blockelevator.mixins;
 
-import com.fox2code.foxloader.network.NetworkPlayer;
-import com.kingcolton1.blockelevator.BlockElevatorServer;
-import net.minecraft.src.game.entity.EntityLiving;
-import net.minecraft.src.game.entity.player.EntityPlayer;
-import net.minecraft.src.game.level.World;
+import com.kingcolton1.blockelevator.BlockElevator;
+import net.minecraft.common.entity.EntityLiving;
+import net.minecraft.common.entity.player.EntityPlayer;
+import net.minecraft.common.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.kingcolton1.blockelevator.Elevator;
+import com.kingcolton1.blockelevator.RunElevator;
 
 @Mixin(value = EntityPlayer.class, remap = false)
 public abstract class EntityPlayerMixin extends EntityLiving {
@@ -36,7 +35,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 	@Inject(method= "onLivingUpdate()V", at = @At("TAIL"))
 	private void elevatorTick(CallbackInfo ci) {
-		if (!BlockElevatorServer.config.enabled)
+		if (!BlockElevator.config.enabled)
 			return;
 
 		double dy = posY-py;
@@ -59,7 +58,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 			for (int z = minZ; z <= minZ + 1; z++){
 				final int blockID = worldObj.getBlockId(x, plrY, z);
 
-				if (BlockElevatorServer.config.elevatorBlockIDs.contains(blockID)){
+				if (BlockElevator.config.elevatorBlockIDs.contains(blockID)){
 					stoodOnElevator = true;
 					plrX = x;
 					plrZ = z;
@@ -71,7 +70,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 		final int blockIdUnderPlr = worldObj.getBlockId(plrX, plrY, plrZ);
 
 		// Assigned block is found, otherwise keep looking for it
-		if (BlockElevatorServer.config.elevatorBlockIDs.contains(blockIdUnderPlr)){
+		if (BlockElevator.config.elevatorBlockIDs.contains(blockIdUnderPlr)){
 			stoodOnElevator = true;
 			elevatorBlockX = plrX;
 			elevatorBlockY = plrY;
@@ -82,13 +81,13 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 		// Cooldown after use of elevator (jump or sneak)
 		if (isSneaking() && stoodOnElevator) {
-			Elevator.sneak(worldObj, plrX, plrY, plrZ, thisAs, (NetworkPlayer)thisAs);
+			RunElevator.sneak(worldObj, plrX, plrY, plrZ, thisAs);
 			stoodOnElevator = false;
-			cooldown = BlockElevatorServer.config.coolDownTicks;
-		} else if (dy > BlockElevatorServer.config.dYRequiredForJump && stoodOnElevator && Math.abs(posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(posZ - (elevatorBlockZ+0.5f)) < 0.5f && posY - elevatorBlockY > 0) { // Jumping detection
-			Elevator.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs, (NetworkPlayer)thisAs);
+			cooldown = BlockElevator.config.coolDownTicks;
+		} else if (dy > BlockElevator.config.dYRequiredForJump && stoodOnElevator && Math.abs(posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(posZ - (elevatorBlockZ+0.5f)) < 0.5f && posY - elevatorBlockY > 0) { // Jumping detection
+			RunElevator.jump(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
 			stoodOnElevator = false;
-			cooldown = BlockElevatorServer.config.coolDownTicks;
+			cooldown = BlockElevator.config.coolDownTicks;
 		}
 	}
 }

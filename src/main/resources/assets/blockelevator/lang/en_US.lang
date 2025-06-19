@@ -1,0 +1,2 @@
+key.blockelevator.AboveIsBlocked="Something is blocking a elevator block above you!"
+key.blockelevator.NoElevatorAbove="There is no elevator block above you. Try shift to go down."

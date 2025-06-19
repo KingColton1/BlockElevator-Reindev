@@ -1,8 +1,10 @@
 package com.kingcolton1.blockelevator;
 
-import com.fox2code.foxloader.loader.ServerMod;
 import com.google.common.collect.Lists;
-import net.minecraft.src.game.block.Block;
+import net.minecraft.common.block.Block;
+import net.minecraft.common.block.Blocks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,8 +14,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Config {
+    private static final Logger log = LoggerFactory.getLogger(Config.class);
     public boolean enabled = true;
-    public List<Integer> elevatorBlockIDs = Lists.newArrayList(Block.blockGold.blockID);
+    public List<Integer> elevatorBlockIDs = Lists.newArrayList(Blocks.GOLD_BLOCK.blockID);
     public Integer coolDownTicks = 15;
     public Integer maxYStep = 40;
     public Double dYRequiredForJump = 0.075;
@@ -41,7 +44,7 @@ public class Config {
 
             fileWriter.close();
         } catch (IOException e) {
-            ServerMod.getGameInstance().logWarning(BlockElevator.loggingPrefix + "Failed to write config file to " + filename);
+            log.warn(BlockElevator.loggingPrefix + "Failed to write config file to " + filename);
         }
     }
 
@@ -64,7 +67,7 @@ public class Config {
 
             int separatorIndex = line.indexOf("=");
             if (separatorIndex == -1){
-                ServerMod.getGameInstance().logWarning(BlockElevator.loggingPrefix + "Failed to find '=' separator on line " + lineNum + " in config file " + filename);
+                log.warn(BlockElevator.loggingPrefix + "Failed to find '=' separator on line " + lineNum + " in config file " + filename);
                 continue;
             }
 
@@ -77,12 +80,12 @@ public class Config {
                     try {
                         blockID = Integer.parseInt(elevatorBlockIDsFromLine[i]);
                         // Let's filter out any invalid block IDs because they can crash clients through the Packet61SoundFX packet
-                        if (blockID >= Block.blocksList.length){
-                            ServerMod.getGameInstance().logWarning(BlockElevator.loggingPrefix + "Ignoring invalid block ID " + blockID + " found on line " + lineNum + ", at element index " + i + " in config file " + filename);
+                        /*if (blockID >= Block.blocksList.length){
+                            log.warn("{}Ignoring invalid block ID {} found on line {}, at element index {} in config file {}", BlockElevator.loggingPrefix, blockID, lineNum, i, filename);
                             continue;
-                        }
+                        }*/
                     } catch(NumberFormatException e){
-                        ServerMod.getGameInstance().logWarning(BlockElevator.loggingPrefix + "Failed to parse integer on line " + lineNum + ", at element index " + i + " in config file " + filename);
+                        log.warn(BlockElevator.loggingPrefix + "Failed to parse integer on line " + lineNum + " at element index " + i + " in config file " + filename);
                         continue;
                     }
 

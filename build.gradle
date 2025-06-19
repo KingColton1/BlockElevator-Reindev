@@ -1,27 +1,38 @@
 buildscript {
-	repositories {
+    repositories {
         mavenCentral()
-        maven { url 'https://jitpack.io/' }
+        maven { url 'https://cdn.fox2code.com/maven' }
     }
     dependencies {
-        classpath('com.fox2code.FoxLoader:dev:1.2.33')
+        classpath('com.fox2code.FoxLoader:dev:2.0-alpha19')
     }
 }
 
 apply plugin: 'foxloader.dev'
 
-version '1.2.1'
+group = 'com.fox2code'
+version = '2.0.0'
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    from "LICENSE"
+}
 
 foxloader {
-    // forceReload = true
     modId = "blockelevator"
     modName = "BlockElevator"
+    //modIcon = "assets/examplemod/icon.png"
     modVersion = project.version
+    modAuthors = "KingColton1"
+    modWebsite = "https://github.com/KingColton1/BlockElevator-Reindev"
+    modMain = "com.kingcolton1.blockelevator.BlockElevator"
     modDesc = "Turn an blocks into elevator"
-    // clientMod = "com.fox2code.examplemod.BlockElevatorClient"
-    serverMod = "com.kingcolton1.blockelevator.BlockElevatorServer"
-    // Development tools don't like that both client and server define
-    // the same classes, so uncomment to disable the side inclusion.
-    includeClient = false
-    // includeServer = false
 }
