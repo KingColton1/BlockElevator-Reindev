@@ -3,7 +3,6 @@ package com.kingcolton1.blockelevator.commands;
 import net.minecraft.common.command.Command;
 import net.minecraft.common.command.ICommandListener;
 import net.minecraft.common.util.ChatColors;
-import net.minecraft.common.entity.player.EntityPlayer;
 import com.kingcolton1.blockelevator.BlockElevator;
 
 public class Elevator extends Command {
@@ -12,34 +11,33 @@ public class Elevator extends Command {
     }
 
     @Override
-    public void printHelpInformation(ICommandListener commandExecutor) {
-
-    }
+    public void printHelpInformation(ICommandListener commandExecutor) {}
 
     @Override
     public String commandSyntax() {
         return ChatColors.YELLOW + "/elevator <name> <value>";
     }
 
-    public void onExecute(String[] args, EntityPlayer commandExecutor) {
+    @Override
+    public void onExecute(String[] args, ICommandListener commandExecutor) {
         if (args.length <= 1){
-            commandExecutor.addChatMessage(ChatColors.GREEN + "Usage: " + commandSyntax());
+            commandExecutor.broadcastMessage(ChatColors.GREEN + "Usage: " + commandSyntax());
 
-            commandExecutor.addChatMessage(ChatColors.GREEN + "BlockElevator config:");
-            commandExecutor.addChatMessage(BlockElevator.config.enabledConfigName + " = " + ChatColors.GRAY + BlockElevator.config.enabled);
-            commandExecutor.addChatMessage(BlockElevator.config.coolDownTicksConfigName + " = " + ChatColors.GRAY + BlockElevator.config.coolDownTicks);
-            commandExecutor.addChatMessage(BlockElevator.config.maxYStepConfigName + " = " + ChatColors.GRAY + BlockElevator.config.maxYStep);
-            commandExecutor.addChatMessage(BlockElevator.config.dYRequiredForJumpConfigName + " = " + ChatColors.GRAY + BlockElevator.config.dYRequiredForJump);
+            commandExecutor.broadcastMessage(ChatColors.GREEN + "BlockElevator config:");
+            commandExecutor.broadcastMessage(BlockElevator.config.enabledConfigName + " = " + ChatColors.GRAY + BlockElevator.config.enabled);
+            commandExecutor.broadcastMessage(BlockElevator.config.coolDownTicksConfigName + " = " + ChatColors.GRAY + BlockElevator.config.coolDownTicks);
+            commandExecutor.broadcastMessage(BlockElevator.config.maxYStepConfigName + " = " + ChatColors.GRAY + BlockElevator.config.maxYStep);
+            commandExecutor.broadcastMessage(BlockElevator.config.dYRequiredForJumpConfigName + " = " + ChatColors.GRAY + BlockElevator.config.dYRequiredForJump);
             return;
         }
 
         if (!commandExecutor.isOp()){
-            commandExecutor.addChatMessage(ChatColors.RED + "Operator-only command");
+            commandExecutor.broadcastMessage(ChatColors.RED + "Operator-only command");
             return;
         }
 
         if (args.length < 3){
-            commandExecutor.addChatMessage(commandSyntax());
+            commandExecutor.broadcastMessage(commandSyntax());
             return;
         }
 
@@ -47,8 +45,8 @@ public class Elevator extends Command {
         String value = args[2];
 
         if (name.isEmpty() || value.isEmpty()) {
-            commandExecutor.addChatMessage(ChatColors.RED + "You can't specify an empty name or value");
-            commandExecutor.addChatMessage(ChatColors.RED + "You probably typed 2 spaces somewhere in the command!");
+            commandExecutor.broadcastMessage(ChatColors.RED + "You can't specify an empty name or value");
+            commandExecutor.broadcastMessage(ChatColors.RED + "You probably typed 2 spaces somewhere in the command!");
             return;
         }
 
@@ -57,24 +55,24 @@ public class Elevator extends Command {
             // Pretty messy
             if (name.equalsIgnoreCase(BlockElevator.config.enabledConfigName)){
                 BlockElevator.config.enabled = Boolean.parseBoolean(value);
-                commandExecutor.addChatMessage(BlockElevator.config.enabledConfigName + isNow + BlockElevator.config.enabled);
+                commandExecutor.broadcastMessage(BlockElevator.config.enabledConfigName + isNow + BlockElevator.config.enabled);
             } else if (name.equalsIgnoreCase(BlockElevator.config.coolDownTicksConfigName)) {
                 BlockElevator.config.coolDownTicks = Integer.parseInt(value);
-                commandExecutor.addChatMessage(BlockElevator.config.coolDownTicksConfigName + isNow + BlockElevator.config.coolDownTicks);
+                commandExecutor.broadcastMessage(BlockElevator.config.coolDownTicksConfigName + isNow + BlockElevator.config.coolDownTicks);
             } else if (name.equalsIgnoreCase(BlockElevator.config.maxYStepConfigName)) {
                 if (Integer.parseInt(value) < 3){
-                    commandExecutor.addChatMessage(ChatColors.YELLOW + BlockElevator.config.maxYStepConfigName + " Can't be set lower than 3.");
+                    commandExecutor.broadcastMessage(ChatColors.YELLOW + BlockElevator.config.maxYStepConfigName + " Can't be set lower than 3.");
                     return;
                 }
 
                 BlockElevator.config.maxYStep = Integer.parseInt(value);
-                commandExecutor.addChatMessage(BlockElevator.config.maxYStepConfigName + isNow + BlockElevator.config.maxYStep);
+                commandExecutor.broadcastMessage(BlockElevator.config.maxYStepConfigName + isNow + BlockElevator.config.maxYStep);
             } else if (name.equalsIgnoreCase(BlockElevator.config.dYRequiredForJumpConfigName)) {
                 BlockElevator.config.dYRequiredForJump = Double.parseDouble(value);
-                commandExecutor.addChatMessage(BlockElevator.config.dYRequiredForJumpConfigName + isNow + BlockElevator.config.dYRequiredForJump);
+                commandExecutor.broadcastMessage(BlockElevator.config.dYRequiredForJumpConfigName + isNow + BlockElevator.config.dYRequiredForJump);
             }
         } catch(NumberFormatException e){
-            commandExecutor.addChatMessage(ChatColors.RED + "Value is not a valid number");
+            commandExecutor.broadcastMessage(ChatColors.RED + "Value is not a valid number");
         }
     }
 }

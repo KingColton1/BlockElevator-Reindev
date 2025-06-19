@@ -1,7 +1,6 @@
 package com.kingcolton1.blockelevator;
 
 import com.google.common.collect.Lists;
-import net.minecraft.common.block.Block;
 import net.minecraft.common.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +79,10 @@ public class Config {
                     try {
                         blockID = Integer.parseInt(elevatorBlockIDsFromLine[i]);
                         // Let's filter out any invalid block IDs because they can crash clients through the Packet61SoundFX packet
-                        /*if (blockID >= Block.blocksList.length){
-                            log.warn("{}Ignoring invalid block ID {} found on line {}, at element index {} in config file {}", BlockElevator.loggingPrefix, blockID, lineNum, i, filename);
+                        if (blockID >= Blocks.BLOCKS_LIST.length){
+                            log.warn(BlockElevator.loggingPrefix + "Ignoring invalid block ID " + blockID + " found on line " + lineNum + " at element index " + i + " in config file " + filename);
                             continue;
-                        }*/
+                        }
                     } catch(NumberFormatException e){
                         log.warn(BlockElevator.loggingPrefix + "Failed to parse integer on line " + lineNum + " at element index " + i + " in config file " + filename);
                         continue;

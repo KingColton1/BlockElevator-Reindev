@@ -2,8 +2,8 @@ package com.kingcolton1.blockelevator.commands;
 
 import net.minecraft.common.command.ICommandListener;
 import net.minecraft.common.util.ChatColors;
-import net.minecraft.common.entity.player.EntityPlayer;
 import com.kingcolton1.blockelevator.BlockElevator;
+import com.kingcolton1.blockelevator.BlocksList;
 import net.minecraft.common.command.Command;
 import net.minecraft.common.block.Block;
 
@@ -14,39 +14,40 @@ public class ElevatorBlocks extends Command {
     }
 
     @Override
-    public void printHelpInformation(ICommandListener commandExecutor) {
-
-    }
+    public void printHelpInformation(ICommandListener commandExecutor) {}
 
     @Override
     public String commandSyntax() {
         return ChatColors.YELLOW + "/elevatorblocks <add/remove> <block name or id>";
     }
 
-    public void onExecute(String[] args, EntityPlayer commandExecutor) {
+    @Override
+    public void onExecute(String[] args, ICommandListener commandExecutor) {
+        BlocksList blocksList = new BlocksList();
+
         if (args.length <= 1){
-            commandExecutor.addChatMessage(ChatColors.GREEN + "Usage: " + commandSyntax());
+            commandExecutor.broadcastMessage(ChatColors.GREEN + "Usage: " + commandSyntax());
 
             if (!BlockElevator.config.elevatorBlockIDs.isEmpty()) {
-                commandExecutor.addChatMessage(ChatColors.GREEN + "Elevator blocks:");
+                commandExecutor.broadcastMessage(ChatColors.GREEN + "Elevator blocks:");
             } else{
-                commandExecutor.addChatMessage(ChatColors.YELLOW + "There are no elevator blocks!");
-                commandExecutor.addChatMessage(ChatColors.YELLOW +  "Type " + ChatColors.RESET + "/elevatorblocks add gold_block" + ChatColors.YELLOW + " to add one!");
+                commandExecutor.broadcastMessage(ChatColors.YELLOW + "There are no elevator blocks!");
+                commandExecutor.broadcastMessage(ChatColors.YELLOW +  "Type " + ChatColors.RESET + "/elevatorblocks add gold_block" + ChatColors.YELLOW + " to add one!");
             }
 
-            //for (int blockID : BlockElevator.config.elevatorBlockIDs)
-            //    commandExecutor.addChatMessage(Block.blocksList[blockID].getBlockName().substring(5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ")"); // .substring(5) removes "tile." from the beginning
-
+            for (int blockID : BlockElevator.config.elevatorBlockIDs) {
+                commandExecutor.broadcastMessage(blocksList.getBlockName(blockID, 5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ")"); // .substring(5) removes "tile." from the beginning
+            }
             return;
         }
 
         if (!commandExecutor.isOp()){
-            commandExecutor.addChatMessage(ChatColors.RED + "Operator-only command");
+            commandExecutor.broadcastMessage(ChatColors.RED + "Operator-only command");
             return;
         }
 
         if (args.length < 3){
-            commandExecutor.addChatMessage(commandSyntax());
+            commandExecutor.broadcastMessage(commandSyntax());
             return;
         }
 
@@ -54,8 +55,8 @@ public class ElevatorBlocks extends Command {
         final String blockNameOrID = args[2];
 
         if (addOrRemove.isEmpty() || blockNameOrID.isEmpty()){
-            commandExecutor.addChatMessage(ChatColors.RED + "You can't specify an empty action or block name/id");
-            commandExecutor.addChatMessage(ChatColors.RED + "You probably typed 2 spaces somewhere in the command!");
+            commandExecutor.broadcastMessage(ChatColors.RED + "You can't specify an empty action or block name/id");
+            commandExecutor.broadcastMessage(ChatColors.RED + "You probably typed 2 spaces somewhere in the command!");
             return;
         }
 
@@ -66,36 +67,34 @@ public class ElevatorBlocks extends Command {
             try {
                 blockID = Integer.parseInt(Block.getBlockByName(blockNameOrID)); // Why does this return an integer as a string?
             } catch(NumberFormatException e2){
-                commandExecutor.addChatMessage(ChatColors.RED + "Failed to find a block named \"" + ChatColors.RESET + blockNameOrID + ChatColors.RED + "\"");
+                commandExecutor.broadcastMessage(ChatColors.RED + "Failed to find a block named \"" + ChatColors.RESET + blockNameOrID + ChatColors.RED + "\"");
                 return;
             }
         }
 
-        /*
-        Block block;
         try {
-            block = Block.blocksList[blockID];
+            blocksList.checkBlockId(blockID);
         } catch (ArrayIndexOutOfBoundsException e) {
-            commandExecutor.displayChatMessage(ChatColors.RED + "Invalid block ID " + ChatColors.RESET + blockNameOrID);
+            commandExecutor.broadcastMessage(ChatColors.RED + "Invalid block ID " + ChatColors.RESET + blockNameOrID);
             return;
-        }*/
+        }
 
         if (addOrRemove.equalsIgnoreCase("add")){
             if (BlockElevator.config.elevatorBlockIDs.contains(blockID)){
-                //commandExecutor.addChatMessage(ChatColors.RED + "The block " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.RED + " (id " + ChatColors.RESET + blockID + ChatColors.RED + ") is already an elevator block");
+                commandExecutor.broadcastMessage(ChatColors.RED + "The block " + ChatColors.RESET + blocksList.getBlockName(blockID, 5) + ChatColors.RED + " (id " + ChatColors.RESET + blockID + ChatColors.RED + ") is already an elevator block");
                 return;
             }
 
             BlockElevator.config.elevatorBlockIDs.add(blockID);
-            //commandExecutor.addChatMessage(ChatColors.GREEN + "Added " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ") as an elevator block!");
+            commandExecutor.broadcastMessage(ChatColors.GREEN + "Added " + ChatColors.RESET + blocksList.getBlockName(blockID, 5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ") as an elevator block!");
         } else if (addOrRemove.equalsIgnoreCase("remove")){
             boolean removed = BlockElevator.config.elevatorBlockIDs.remove((Object)blockID);
-            //if (removed)
-            //    commandExecutor.addChatMessage(ChatColors.GREEN + "Removed " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ") as an elevator block!");
-            //else
-            //    commandExecutor.addChatMessage(ChatColors.YELLOW + "The block " + ChatColors.RESET + block.getBlockName().substring(5) + ChatColors.YELLOW + " (id " + ChatColors.RESET + blockID + ChatColors.YELLOW + ") isn't an elevator block, nothing to remove");
+            if (removed)
+                commandExecutor.broadcastMessage(ChatColors.GREEN + "Removed " + ChatColors.RESET + blocksList.getBlockName(blockID, 5) + ChatColors.GREEN + " (id " + ChatColors.RESET + blockID + ChatColors.GREEN + ") as an elevator block!");
+            else
+                commandExecutor.broadcastMessage(ChatColors.YELLOW + "The block " + ChatColors.RESET + blocksList.getBlockName(blockID, 5) + ChatColors.YELLOW + " (id " + ChatColors.RESET + blockID + ChatColors.YELLOW + ") isn't an elevator block, nothing to remove");
         } else {
-            commandExecutor.addChatMessage(commandSyntax());
+            commandExecutor.broadcastMessage(commandSyntax());
         }
     }
 }

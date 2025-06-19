@@ -1,6 +1,5 @@
 package com.kingcolton1.blockelevator;
 
-import com.fox2code.foxloader.network.ConnectionType;
 import com.fox2code.foxloader.registry.CommandRegistry;
 import com.fox2code.foxloader.loader.Mod;
 import com.kingcolton1.blockelevator.commands.Elevator;
@@ -15,9 +14,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class BlockElevator extends Mod {
-    private static final Logger log = LoggerFactory.getLogger(Config.class);
+    private static final Logger log = LoggerFactory.getLogger(BlockElevator.class);
     public static String loggingPrefix = "[BlockElevator] ";
-    public static Config config = new Config();
+    public static final Config config = new Config();
     public static final String blockElevatorBasePath = "mods/BlockElevator/";
     public static final String configFilename = blockElevatorBasePath + "config.txt";
 
@@ -30,13 +29,13 @@ public class BlockElevator extends Mod {
 
     @Override
     public void onInit() {
-        // If the file isn't found e.g. when the mod is first installed, this will use the default values
+        // If the file isn't found, e.g., when the mod is first installed, this will use the default values
         config.loadFromFile(configFilename);
         log.info(loggingPrefix + "Initialized! Enjoy :)");
     }
 
-    public void onStop(ConnectionType connectionType) {
-        // Make sure mods/BlockElevator directory exists
+    public void onPostInit() {
+        // Make sure the mods / BlockElevator directory exists
         Path modsPath = Paths.get(blockElevatorBasePath);
         try {
             Files.createDirectory(modsPath);
