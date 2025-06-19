@@ -14,7 +14,7 @@ To create an elevator, first place a gold block (default) anywhere and place a s
 NOTE: You can only move up to 40 blocks up or down by default before you need to place down another elevator block.
 
 ## Commands
-`/elevator` (OP not required, but is for the commands below)\
+`/elevator` (OP required)\
 Shows the config
 
 `/elevator enabled <true or false>`\

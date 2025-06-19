@@ -7,10 +7,9 @@ import com.kingcolton1.blockelevator.BlocksList;
 import net.minecraft.common.command.Command;
 import net.minecraft.common.block.Block;
 
-// NOTE: Block.blocksList is removed, apparently. We need to find another way to index the list of block IDs.
 public class ElevatorBlocks extends Command {
     public ElevatorBlocks(){
-        super("elevatorblocks", true, false);
+        super("elevatorblocks", false, false);
     }
 
     @Override
