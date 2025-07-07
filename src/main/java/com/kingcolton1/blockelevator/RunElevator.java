@@ -3,10 +3,15 @@ package com.kingcolton1.blockelevator;
 import net.minecraft.common.util.ChatColors;
 import net.minecraft.common.entity.player.EntityPlayer;
 import net.minecraft.server.entity.player.EntityPlayerMP;
+import net.minecraft.client.player.EntityPlayerSP;
 import net.minecraft.common.world.World;
 import net.minecraft.common.block.Blocks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RunElevator {
+	private static final Logger log = LoggerFactory.getLogger(RunElevator.class);
+
 	public static String scanBeforeJump(World world, int x, int y, int z, EntityPlayer player) {
 		for (int y2 = y+3; y2 < Math.min(y + BlockElevator.config.maxYStep + 1, world.highestY); y2++) {
 			if (BlockElevator.config.elevatorBlockIDs.contains(world.getBlockId(x, y2, z))){
@@ -25,6 +30,7 @@ public class RunElevator {
 	public static String scanBeforeSneak(World world, int x, int y, int z, EntityPlayer player) {
 		for (int y2 = y-1; y2 > Math.max(y - BlockElevator.config.maxYStep - 1, 0); y2--) {
 			int blockID = world.getBlockId(x, y2, z);
+
 			if (BlockElevator.config.elevatorBlockIDs.contains(blockID)){
 				if (checkForAirAndBlock(world, x, y2, z)) {
 					teleport(x + 0.5, y2+1, z + 0.5, player);
@@ -51,6 +57,11 @@ public class RunElevator {
 	}
 
 	public static void sneak(World world, int x, int y, int z, EntityPlayer player) {
+		if (world.isServer) {
+			log.info("Server");
+		} else if (!world.isServer) {
+			log.info("Client");
+		}
 		String scanBeforeSneak = scanBeforeSneak(world, x, y, z, player);
 
 		if (scanBeforeSneak.equals("success")) {
@@ -64,10 +75,16 @@ public class RunElevator {
 
 	public static void teleport(double x, double y, double z, EntityPlayer player) {
 		if (player instanceof EntityPlayerMP) {
+			log.info("Multiplayer?");
 			EntityPlayerMP playerMP = (EntityPlayerMP)player;
 			playerMP.playerNetServerHandler.teleportTo(x, y, z, playerMP.rotationYaw, playerMP.rotationPitch);
+		} else if (player instanceof EntityPlayerSP) {
+			log.info("Single player? (EntityPlayerSP)");
+			EntityPlayerSP playerSP = (EntityPlayerSP)player;
+			playerSP.teleportTo(x, y, z, playerSP.rotationYaw, playerSP.rotationPitch);
 		} else if (player instanceof EntityPlayer) {
-			player.setPosition(x, y + player.height, z);
+			log.info("Single player? (EntityPlayer)");
+			player.teleportTo(x, y, z, player.rotationYaw, player.rotationPitch);
 		}
 	}
 

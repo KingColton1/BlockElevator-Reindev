@@ -17,8 +17,8 @@ public class BlockElevator extends Mod {
     private static final Logger log = LoggerFactory.getLogger(BlockElevator.class);
     public static String loggingPrefix = "[BlockElevator] ";
     public static final Config config = new Config();
-    public static final String blockElevatorBasePath = "mods/BlockElevator/";
-    public static final String configFilename = blockElevatorBasePath + "config.txt";
+    //public static final String blockElevatorBasePath = "mods/BlockElevator/";
+    //public static final String configFilename = blockElevatorBasePath + "config.txt";
 
     @Override
     public void onPreInit() {
@@ -30,10 +30,11 @@ public class BlockElevator extends Mod {
     @Override
     public void onInit() {
         // If the file isn't found, e.g., when the mod is first installed, this will use the default values
-        config.loadFromFile(configFilename);
+        //config.loadFromFile(configFilename);
         log.info(loggingPrefix + "Initialized! Enjoy :)");
     }
 
+    /*
     public void onPostInit() {
         // Make sure the mods / BlockElevator directory exists
         Path modsPath = Paths.get(blockElevatorBasePath);
@@ -47,5 +48,5 @@ public class BlockElevator extends Mod {
             }
         }
         config.writeToFile(configFilename);
-    }
+    }*/
 }

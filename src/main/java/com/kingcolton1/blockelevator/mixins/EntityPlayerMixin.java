@@ -35,7 +35,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 	@Inject(method= "onLivingUpdate()V", at = @At("TAIL"))
 	private void elevatorTick(CallbackInfo ci) {
-		if (!BlockElevator.config.enabled)
+		if (!BlockElevator.config.enableElevator)
 			return;
 
 		double dy = posY-py;
