@@ -4,6 +4,8 @@ import com.kingcolton1.blockelevator.BlockElevator;
 import net.minecraft.common.entity.EntityLiving;
 import net.minecraft.common.entity.player.EntityPlayer;
 import net.minecraft.common.world.World;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,6 +17,7 @@ import com.kingcolton1.blockelevator.RunElevator;
 @Mixin(value = EntityPlayer.class, remap = false)
 public abstract class EntityPlayerMixin extends EntityLiving {
 
+	private static final Logger log = LoggerFactory.getLogger(EntityPlayerMixin.class);
 	@Unique
 	protected int elevatorBlockX;
 	@Unique
@@ -47,9 +50,10 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 		}
 
 		int plrX = (int) posX - 1;
-		int plrY = (int) posY - 1;
-		int plrZ = (int) posZ - 1;
+		int plrY = (int) posY - 2;
+		int plrZ = (int) posZ;
 
+		/* redundant
 		final int minX = (int)Math.floor(posX - 0.5d);
 		final int minZ = (int)Math.floor(posZ - 0.5d);
 
@@ -65,9 +69,10 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 					break searchLoop;
 				}
 			}
-		}
+		}*/
 
 		final int blockIdUnderPlr = worldObj.getBlockId(plrX, plrY, plrZ);
+		log.info("Block ID under player: " + blockIdUnderPlr + " in " + worldObj.worldInfo.getWorldName());
 
 		// Assigned block is found, otherwise keep looking for it
 		if (BlockElevator.config.elevatorBlockIDs.contains(blockIdUnderPlr)){
@@ -81,7 +86,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 
 		// Cooldown after use of elevator (jump or sneak)
 		if (isSneaking() && stoodOnElevator) {
-			RunElevator.sneak(worldObj, plrX, plrY, plrZ, thisAs);
+			RunElevator.sneak(worldObj, elevatorBlockX, elevatorBlockY, elevatorBlockZ, thisAs);
 			stoodOnElevator = false;
 			cooldown = BlockElevator.config.coolDownTicks;
 		} else if (dy > BlockElevator.config.dYRequiredForJump && stoodOnElevator && Math.abs(posX - (elevatorBlockX+0.5f)) < 0.5f && Math.abs(posZ - (elevatorBlockZ+0.5f)) < 0.5f && posY - elevatorBlockY > 0) { // Jumping detection

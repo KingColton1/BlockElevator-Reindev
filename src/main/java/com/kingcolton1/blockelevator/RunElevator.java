@@ -16,7 +16,7 @@ public class RunElevator {
 		for (int y2 = y+3; y2 < Math.min(y + BlockElevator.config.maxYStep + 1, world.highestY); y2++) {
 			if (BlockElevator.config.elevatorBlockIDs.contains(world.getBlockId(x, y2, z))){
 				if (checkForAirAndBlock(world, x, y2, z)) {
-					teleport(x + 0.5, y2+1, z+0.5, player);
+					teleport(x + 0.5, y2+3, z+0.5, player);
 					world.playAuxSFX(2020, x, y2, z, 0); // random.pop
 					return "success";
 				} else {
@@ -33,7 +33,7 @@ public class RunElevator {
 
 			if (BlockElevator.config.elevatorBlockIDs.contains(blockID)){
 				if (checkForAirAndBlock(world, x, y2, z)) {
-					teleport(x + 0.5, y2+1, z + 0.5, player);
+					teleport(x + 0.5, y2+3, z + 0.5, player);
 					world.playAuxSFX(900, x, y2, z, blockID); // Step sound of the block below
 					return "success";
 				} else {
@@ -57,11 +57,6 @@ public class RunElevator {
 	}
 
 	public static void sneak(World world, int x, int y, int z, EntityPlayer player) {
-		if (world.isServer) {
-			log.info("Server");
-		} else if (!world.isServer) {
-			log.info("Client");
-		}
 		String scanBeforeSneak = scanBeforeSneak(world, x, y, z, player);
 
 		if (scanBeforeSneak.equals("success")) {
@@ -89,9 +84,9 @@ public class RunElevator {
 	}
 
 	public static boolean checkForAirAndBlock(World world, int x, int y2, int z) {
-		boolean airBlockCheckTop = world.isAirBlock(x, y2 + 1, z);
+		boolean airBlockCheckTop = world.isAirBlock(x, y2 + 2, z);
 		boolean airBlockCheckBot = world.isAirBlock(x, y2 + 1, z);
-		int getBlockIdCoordTop = world.getBlockId(x, y2 + 1, z);
+		int getBlockIdCoordTop = world.getBlockId(x, y2 + 2, z);
 		int getBlockIdCoordBot = world.getBlockId(x, y2 + 1, z);
 
 		int[] listOfNonBlockingBlock = {
