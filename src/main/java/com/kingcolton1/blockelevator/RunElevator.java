@@ -13,10 +13,10 @@ public class RunElevator {
 	private static final Logger log = LoggerFactory.getLogger(RunElevator.class);
 
 	public static String scanBeforeJump(World world, int x, int y, int z, EntityPlayer player) {
-		for (int y2 = y+3; y2 < Math.min(y + BlockElevator.config.maxYStep + 1, world.highestY); y2++) {
+		for (int y2 = y + 3; y2 < Math.min(y + BlockElevator.config.maxYStep + 1, world.highestY); y2++) {
 			if (BlockElevator.config.elevatorBlockIDs.contains(world.getBlockId(x, y2, z))){
 				if (checkForAirAndBlock(world, x, y2, z)) {
-					teleport(x + 0.5, y2+3, z+0.5, player);
+					teleport(x + 0.5, y2 + 3, z + 0.5, player);
 					world.playAuxSFX(2020, x, y2, z, 0); // random.pop
 					return "success";
 				} else {
@@ -28,12 +28,12 @@ public class RunElevator {
 	}
 
 	public static String scanBeforeSneak(World world, int x, int y, int z, EntityPlayer player) {
-		for (int y2 = y-1; y2 > Math.max(y - BlockElevator.config.maxYStep - 1, 0); y2--) {
+		for (int y2 = y - 1; y2 > Math.max(y - BlockElevator.config.maxYStep - 1, 0); y2--) {
 			int blockID = world.getBlockId(x, y2, z);
 
 			if (BlockElevator.config.elevatorBlockIDs.contains(blockID)){
 				if (checkForAirAndBlock(world, x, y2, z)) {
-					teleport(x + 0.5, y2+3, z + 0.5, player);
+					teleport(x + 0.5, y2 + 3, z + 0.5, player);
 					world.playAuxSFX(900, x, y2, z, blockID); // Step sound of the block below
 					return "success";
 				} else {

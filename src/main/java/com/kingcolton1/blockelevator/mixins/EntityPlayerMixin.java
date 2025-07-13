@@ -49,11 +49,22 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 			return;
 		}
 
-		int plrX = (int) posX - 1;
-		int plrY = (int) posY - 2;
-		int plrZ = (int) posZ;
+		int plrX;
+		int plrY;
+		int plrZ;
 
-		/* redundant
+		if (worldObj.isServer) {
+			plrX = (int) posX - 1;
+			plrY = (int) posY - 1;
+			plrZ = (int) posZ - 1;
+		}
+		else {
+			plrX = (int) boundingBox.minX - 1;
+			plrY = (int) boundingBox.minY - 1;
+			plrZ = (int) boundingBox.minZ;
+		}
+
+		/* Redundant code, will be left here for now
 		final int minX = (int)Math.floor(posX - 0.5d);
 		final int minZ = (int)Math.floor(posZ - 0.5d);
 
@@ -75,7 +86,7 @@ public abstract class EntityPlayerMixin extends EntityLiving {
 		log.info("Block ID under player: " + blockIdUnderPlr + " in " + worldObj.worldInfo.getWorldName());
 
 		// Assigned block is found, otherwise keep looking for it
-		if (BlockElevator.config.elevatorBlockIDs.contains(blockIdUnderPlr)){
+		if (BlockElevator.config.elevatorBlockIDs.contains(blockIdUnderPlr)) {
 			stoodOnElevator = true;
 			elevatorBlockX = plrX;
 			elevatorBlockY = plrY;

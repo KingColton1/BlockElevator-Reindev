@@ -23,6 +23,7 @@ public class BlockElevator extends Mod {
     @Override
     public void onPreInit() {
         log.info(loggingPrefix + "Initializing...");
+        //this.setConfigObject(config);
         CommandRegistry.registerCommand(new Elevator());
         CommandRegistry.registerCommand(new ElevatorBlocks());
     }
