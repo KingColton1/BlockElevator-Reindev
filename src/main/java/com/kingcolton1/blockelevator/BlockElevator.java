@@ -17,13 +17,13 @@ public class BlockElevator extends Mod {
     private static final Logger log = LoggerFactory.getLogger(BlockElevator.class);
     public static String loggingPrefix = "[BlockElevator] ";
     public static final Config config = new Config();
-    //public static final String blockElevatorBasePath = "mods/BlockElevator/";
-    //public static final String configFilename = blockElevatorBasePath + "config.txt";
+    //public static final String blockElevatorBasePath = "config/";
+    //public static final String configFilename = blockElevatorBasePath + "BlockElevator.cfg";
 
     @Override
     public void onPreInit() {
         log.info(loggingPrefix + "Initializing...");
-        //this.setConfigObject(config);
+        this.setConfigObject(config);
         CommandRegistry.registerCommand(new Elevator());
         CommandRegistry.registerCommand(new ElevatorBlocks());
     }

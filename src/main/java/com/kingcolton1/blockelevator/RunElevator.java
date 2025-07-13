@@ -69,18 +69,24 @@ public class RunElevator {
 	}
 
 	public static void teleport(double x, double y, double z, EntityPlayer player) {
-		if (player instanceof EntityPlayerMP) {
-			log.info("Multiplayer?");
+		if (checkServerOrClient(player).equals("server")) {
+			log.info("Multiplayer? (EntityPlayerMP)");
 			EntityPlayerMP playerMP = (EntityPlayerMP)player;
 			playerMP.playerNetServerHandler.teleportTo(x, y, z, playerMP.rotationYaw, playerMP.rotationPitch);
-		} else if (player instanceof EntityPlayerSP) {
-			log.info("Single player? (EntityPlayerSP)");
+		} else if (checkServerOrClient(player).equals("client")) {
+			log.info("Single Player? (EntityPlayerSP)");
 			EntityPlayerSP playerSP = (EntityPlayerSP)player;
 			playerSP.teleportTo(x, y, z, playerSP.rotationYaw, playerSP.rotationPitch);
-		} else if (player instanceof EntityPlayer) {
-			log.info("Single player? (EntityPlayer)");
-			player.teleportTo(x, y, z, player.rotationYaw, player.rotationPitch);
 		}
+	}
+
+	public static String checkServerOrClient(EntityPlayer player) {
+		if (player instanceof EntityPlayerMP) {
+			return "server";
+		} else if (player instanceof EntityPlayerSP) {
+			return "client";
+		}
+		return "null";
 	}
 
 	public static boolean checkForAirAndBlock(World world, int x, int y2, int z) {
@@ -134,6 +140,6 @@ public class RunElevator {
 			}
 		}
 
-		return (airBlockCheckBot && airBlockCheckTop) || (getBlockIdCoordTop == iTop && airBlockCheckTop) || (getBlockIdCoordBot == iBot && airBlockCheckBot) || (getBlockIdCoordTop == iTop && getBlockIdCoordBot == iBot);
+		return (airBlockCheckBot && airBlockCheckTop) || (getBlockIdCoordTop == iTop && airBlockCheckBot) || (getBlockIdCoordBot == iBot && airBlockCheckTop) || (getBlockIdCoordTop == iTop && getBlockIdCoordBot == iBot);
     }
 }
